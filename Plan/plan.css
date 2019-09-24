@@ -1,0 +1,21 @@
+h1 {
+    color: coral;
+    text-align: center
+}
+
+h2 {
+    text-align: center
+}
+
+h3,
+h4 {
+    color: coral;
+}
+
+h2 {
+    font-style: italic;
+}
+
+#tools {
+    margin-bottom: 6em;
+}

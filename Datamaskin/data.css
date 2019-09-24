@@ -5,3 +5,11 @@ article {
 article > h1 {
     color: blue;
 }
+
+#amd {  
+    width: 25vw;
+}
+
+#intel {
+    width: 25vw;
+}

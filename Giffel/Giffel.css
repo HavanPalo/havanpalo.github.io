@@ -1,0 +1,107 @@
+:root {
+    --walktime: 20s;
+}
+
+
+
+header h1 {
+    color: lightcoral;
+    text-align: center;
+}
+
+main {
+    height: 80vh;
+}
+header {
+    height: 10vh;
+}
+
+footer {
+    height: 10vh;
+}
+#verden {
+    height: 70vh;
+}
+
+#himmel {
+    position: relative;
+    height: 60%;
+    background-color: rgb(154, 203, 228);
+}
+
+#jord {
+    position: relative;
+    height: 25%;
+    background-color: rgb(223, 186, 107);
+}
+
+#person {
+    position: absolute;
+    opacity: 1.0;
+    left: -100px;
+    bottom: 100px;
+    height: 112px;
+    width: 112px;
+    animation: slide 25s linear; 
+    background-image: url("puppet.png");
+    background-position-x: 0;
+    background-position-y: calc(-112px * 2);
+    animation: walk 1.4s steps(8) infinite,
+                slide var(--walktime) linear;
+}
+
+@keyframes walk {
+    100% { background-position-x: calc( -112px * 8 ); }
+}
+
+@keyframes slide{
+    0% { left: -100px; opacity: 1;}
+    99.9% { left: 60vw; opacity: 1;}
+    100%{ left: 60vw; opacity: 0; }
+}
+
+#sol {
+    position: absolute;
+    top: calc(15% - 20px);
+    left: calc(50% - 20px);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: yellow;
+    animation: blink 2s alternate linear infinite;
+}
+
+@keyframes blink {
+    100% { transform: scale(0.87);}
+}
+
+#skeleton {
+    position: absolute;
+    right: 100px;
+    bottom: 30px;
+    height: 112px;
+    width: 112px;
+    background-image: url("puppet.png");
+    transform: rotate(90deg);
+    background-position-x: 0;
+    background-position-y: calc(112px * 2);
+    animation: hide var(--walktime) linear;
+}
+
+#kaktus {
+    position: absolute;
+    right: 40px;
+    bottom: 80px;
+    height: 200px;
+    width: 150px;
+    background-image: url("cactus.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@keyframes hide{
+    0% { left: -100px; opacity: 0;}
+    99.9% { left: 60vw; opacity: 0;}
+    100% { left: 60vw; opacity: 1;}
+}
