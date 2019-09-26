@@ -11,57 +11,63 @@
 
 <body>
     <script>
+        function hide(e) {
+            let t = document.getElementById("hide");
+            t.style.position = "relative";
+            let left = +(t.style.left.replace("px", "")) + 20;
+            t.style.left = left + "px";
+        }
         function helpme() {
             document.location.href = "../index.html"
         }
 
     </script>
-    <header> 
-        <h1>Datamaskinens oppbygging og virkemåte</h1>
-        <button onclick="helpme()">Helpme</button>
+    <header>
+        <h1>Datamaskinens oppbyggning og virkemåte</h1>
+        <button id="hide" onclick="helpme()" onmouseover="hide()">Tilbake</button>
     </header>
     <main>
         <article>
             <h1>Prosessor</h1>
             <div>
                 <h3>Intel</h1>
-                <p>
-                    Amerikans produsent av prosessorer
-                    Grunnlagt 1968 - laget intel 4004 CPU, 4 bits cpu
-                    Dagens CPU er 64 bits. 4 bit gir 2^4 som største tall = 16.
-                    Dagens CPU kan jobbe med tall på på 2^64 = 18446744073709551616.
-                <div>
-                    <img id="intel" src="intel.png" alt="Intel">
-                </div>
+                    <p>
+                        Amerikans produsent av prosessorer
+                        Grunnlagt 1968 - laget intel 4004 CPU, 4 bits cpu
+                        Dagens CPU er 64 bits. 4 bit gir 2^4 som største tall = 16.
+                        Dagens CPU kan jobbe med tall på på 2^64 = 18446744073709551616.
+                        <div>
+                            <img id="intel" src="intel.png" alt="Intel">
+                        </div>
 
-                </p>
-                <h3>AMD</h1>
-                <p>
-                    AMD (Advanced Micro Devices) grunnlagt i 1969
-                    Samme år lanserte de sin egen klone av 8-bit prosessoren Intel 8080, og kalte den AM9080ADC
+                    </p>
+                    <h3>AMD</h1>
+                        <p>
+                            AMD (Advanced Micro Devices) grunnlagt i 1969
+                            Samme år lanserte de sin egen klone av 8-bit prosessoren Intel 8080, og kalte den AM9080ADC
 
-                    <div>
-                        <img id="amd" src="amd.png" alt="AMD">
-                        
-                    </div>
-                </p>
-                <h3>ARM</h1>
-                <p>
-                    Acorn (advanced) RISC (reduced Instruction Set Computer) Machine. 
-                    RISC CPU-er har få og enkle instruksjoner (i motsetning til Intel)
-                    Hver instruksjon skla ta minst mulig tid.
-                    Kompliserte beregninger består av mange instruksjoner.
-                    Brukes i mobiler
+                            <div>
+                                <img id="amd" src="amd.png" alt="AMD">
 
-                    <div>
-                        <!--bilde v en ARM brukt i en mobil-->
-                    </div>
-                </p>
-                <p>
-                    Prosessoren er hjernen i datamaskinen
-                    Hastigheten på en CPU er mellom 2-4 GHz for nye maskiner
-                    1ns er 2.7m
-                </p>
+                            </div>
+                        </p>
+                        <h3>ARM</h1>
+                            <p>
+                                Acorn (advanced) RISC (reduced Instruction Set Computer) Machine.
+                                RISC CPU-er har få og enkle instruksjoner (i motsetning til Intel)
+                                Hver instruksjon skla ta minst mulig tid.
+                                Kompliserte beregninger består av mange instruksjoner.
+                                Brukes i mobiler
+
+                                <div>
+                                    <!--bilde v en ARM brukt i en mobil-->
+                                </div>
+                            </p>
+                            <p>
+                                Prosessoren er hjernen i datamaskinen
+                                Hastigheten på en CPU er mellom 2-4 GHz for nye maskiner
+                                1ns er 2.7m
+                            </p>
             </div>
         </article>
         <article>
@@ -75,7 +81,7 @@
             <div>
                 <p>
                     Standard lagringsmedia i dag er SSD (Solid State Drive)
-                    Tidligere var HDD (Hard Disk Drive) det mest brukte 
+                    Tidligere var HDD (Hard Disk Drive) det mest brukte
                 </p>
             </div>
         </article>

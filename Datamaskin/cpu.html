@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>cpu</title>
+    <link rel="stylesheet" href="cpu.css">
+</head>
+
+<body>
+    <script>
+        function hide(e) {
+            let t = document.getElementById("hide");
+            t.style.position = "relative";
+            let left = +(t.style.left.replace("px", "")) + 20;
+            t.style.left = left + "px";
+        }
+        function helpme() {
+            document.location.href = "../index.html"
+        }
+
+    </script>
+    <button id="hide" onclick="helpme()" onmouseover="hide()">Tilbake</button>
+
+    
+    <div class="firkant" id="cpu">
+        <h2>CPU</h2>
+        <div class="firkant" id="controll">
+            <h5>Controll unit</h4>
+        </div>
+        <div class="firkant" id="processor">
+            <h4>Processor</h4>
+            <div class="firkant" id="registers">
+                <h5>Registers</h5>
+            </div>
+            <div class="firkant" id="alu">
+                <h5>Combinational Logic</h5>
+            </div>
+        </div>
+    </div>
+    <div class="firkant" id="memory">
+        <h5>Main Memory</h5>
+    </div>
+    <div class="firkant" id="input">
+        <h5>Input</h5>
+    </div>
+    <div class="firkant" id="output">
+        <h5>Output</h5>
+    </div>
+
+    <div class="pil oh"></div>
+    <div class="pil ov"></div>
+    <div class="pil nh"></div>
+    <div class="pil nv"></div>
+    <div class="pil ohn"></div>
+
+</body>
+
+</html>
