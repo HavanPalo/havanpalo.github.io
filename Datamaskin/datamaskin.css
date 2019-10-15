@@ -1,0 +1,27 @@
+article {
+    background-color: antiquewhite;
+}
+
+article > h1 {
+    color: rgba(0, 103, 121, 0.986);
+}
+
+img {
+    width: 25%;
+    margin-left: 70%;
+}
+
+td,th,
+table {
+    border: solid gray 1px;
+    border-collapse: collapse;
+    padding: 4px;
+}
+
+tbody {
+    background-color: rgba(255, 68, 0, 0.247);
+}
+
+th {
+    background-color: rgba(0, 87, 250, 0.281)
+}
