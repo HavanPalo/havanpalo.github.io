@@ -19,3 +19,6 @@ h2 {
 #tools {
     margin-bottom: 6em;
 }
+body {
+    background-color: rgba(0, 68, 255, 0.055);
+}
