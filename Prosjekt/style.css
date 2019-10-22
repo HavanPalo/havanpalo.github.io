@@ -7,7 +7,9 @@
     background-color: #333;
     top: 0px;
     width: 100%;
-    left: 0px;
+    left: 100px;
+    width: calc(100vw - 100px);
+    height: 100px;
 }
 #meny li {
     float: left;
@@ -31,4 +33,10 @@
 
 #meny li.right {
     float:right;
+}
+
+a>img {
+    width: 100px;
+    height: 100px;
+    
 }
