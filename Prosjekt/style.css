@@ -12,6 +12,7 @@
 
 #meny li {
     float: left;
+    width: 200px;
 }
 
 #meny li a {
