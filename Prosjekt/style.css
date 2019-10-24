@@ -11,6 +11,7 @@
     width: calc(100vw - 100px);
     height: 100px;
 }
+
 #meny li {
     float: left;
 }
@@ -32,7 +33,7 @@
 }
 
 #meny li.right {
-    float:right;
+    float: right;
 }
 
 a>img {
@@ -41,10 +42,40 @@ a>img {
     position: absolute;
     width: 100px;
     height: 100px;
-
-    
 }
+
 h1 {
     top: 80px;
     position: absolute;
+}
+
+@-webkit-keyframes fadeInDown {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+#fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown;
 }
