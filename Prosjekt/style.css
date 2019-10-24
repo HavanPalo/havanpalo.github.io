@@ -1,15 +1,14 @@
 #meny {
-    position: fixed;
+    position: absolute;
     list-style: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #333;
-    top: 0px;
+    top: 120px;
     width: 100%;
-    left: 100px;
-    width: calc(100vw - 100px);
-    height: 100px;
+    left: 0px;
+    width: 150px;
 }
 
 #meny li {
@@ -19,7 +18,7 @@
 #meny li a {
     display: block;
     color: white;
-    text-align: center;
+    text-align: left;
     padding: 16px;
     text-decoration: none;
 }
@@ -45,8 +44,11 @@ a>img {
 }
 
 h1 {
-    top: 80px;
+    top: 0px;
     position: absolute;
+    text-align: center;
+    left: calc(calc(100vw/2) - 75px);
+    font-size: 300%;
 }
 
 @-webkit-keyframes fadeInDown {
