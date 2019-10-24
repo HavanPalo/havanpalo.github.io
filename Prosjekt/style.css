@@ -36,7 +36,15 @@
 }
 
 a>img {
+    left: 0px;
+    top: 0px;
+    position: absolute;
     width: 100px;
     height: 100px;
+
     
+}
+h1 {
+    top: 80px;
+    position: absolute;
 }
