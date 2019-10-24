@@ -59,6 +59,7 @@ h2 {
 h4 {
     position: relative;
     left: 30vw;
+    max-width: 50vw;
 }
 
 @-webkit-keyframes fadeInDown {
@@ -103,6 +104,7 @@ article {
     border: 2px solid rgb(86, 145, 255);
     min-width: calc(100vw - 400px);
     min-height: calc(100vh - 250px);
+    right: 250px;
 }
 
 p{
