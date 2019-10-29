@@ -66,8 +66,12 @@ article {
     left: 250px;
     text-align: left;
     position: absolute;
-    border: 2px solid rgb(86, 145, 255);
+    border: 2px solid rgb(59, 98, 171);
     min-width: calc(100vw - 400px);
     min-height: calc(100vh - 250px);
     right: 250px;
+}
+
+body {
+    background-color: rgba(0, 0, 0, 0.132);
 }
