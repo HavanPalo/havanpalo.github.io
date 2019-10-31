@@ -1,14 +1,17 @@
 table, td, th{
-    border: 2px solid black;
+    border: 2px solid rgb(0, 0, 0);
     border-collapse: collapse;
 }
 th {
-    background-color: rgb(131, 125, 115);
+    background-color: rgb(164, 164, 164);
 }
 
 tr:nth-child(even) {
-    background-color: rgb(202, 251, 255);
+    background-color:  white;
 }
 tr:nth-child(odd) {
-    background-color: rgb(82, 222, 253);
+    background-color:  rgba(255, 127, 80, 0.596);
+}
+header {
+    background: oldlace;
 }
