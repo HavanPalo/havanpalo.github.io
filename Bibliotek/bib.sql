@@ -1,44 +1,50 @@
-create TABLE laaner
-(
-    lannerid serial primary key,
-    fornavn text not null,
-    etternavn text not null,
-    adresse text not null,
-    epost text not null,
-    tlf text not null
+-- drop table bok,laaner,forfatter,eksemplar,utlaan cascade;
+
+CREATE TABLE laaner (
+  laanerid serial primary key,
+  fornavn text not null,
+  etternavn text not null,
+  adresse text,
+  epost text,
+  tlf text,
+  kjonn text
 );
 
-create table utlaan
-(
-    dato text not null,
-    innlevert text not null,
-    lannerid text not null,
-    eksemplarid text not null
+CREATE TABLE forfatter (
+  forfatterid serial primary key,
+  fornavn text not null,
+  etternavn text not null,
+  fdato date,
+  kjonn text check (
+    kjonn = 'm'
+    or kjonn = 'f'
+  )
 );
 
-create table eksemplar
-( 
-    tilstand text not null,
-    bokid text not null
+CREATE TABLE bok (
+  bokid serial primary key,
+  tittel text not null,
+  pdato date,
+  isbn text,
+  antallSider int check (antallsider > 0),
+  sjanger text,
+  spraak text,
+  forfatterid int references forfatter (forfatterid)
 );
 
-
-create table bok
-(
-    forfatterid int,
-    tittel text not null,
-    isbn text not null,
-    antallsider int not null,
-    pdato text,
-    spraak text not null,
-    sjanger text not null
+CREATE TABLE eksemplar (
+  eksemplarid serial primary key,
+  tillstand text,
+  bokid int references bok (bokid)
 );
 
-create table forfatter
-(
-    forfatterid serial primary key,
-    fornavn text not null,
-    etternavn text not null,
-    fdato date
+CREATE TABLE utlaan (
+  utlaanid serial primary key,
+  udato date,
+  innlevert text default 'nei' check (
+    innlevert = 'ja'
+    or innlevert = 'nei'
+  ),
+  laanerid int references laaner (laanerid),
+  eksemplarid int references eksemplar (eksemplarid)
 );
-
