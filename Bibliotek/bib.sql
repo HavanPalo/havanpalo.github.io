@@ -34,7 +34,7 @@ CREATE TABLE bok (
 
 CREATE TABLE eksemplar (
   eksemplarid serial primary key,
-  tillstand text,
+  tilstand text,
   bokid int references bok (bokid)
 );
 
