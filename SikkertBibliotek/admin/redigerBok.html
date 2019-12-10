@@ -16,26 +16,27 @@
 <body>
 
 
-    <home-bar heading="Skolebibliotek Skeisvang" crumb="rediger forfatter" 
+    <home-bar heading="Skolebibliotek Skeisvang" crumb="rediger bok" 
         getlinks="/htmlfiler/admin"
         username="/myself">
     </home-bar>
 
 
     <div id="admin">
+
         <db-update id="form" key="bokid" update="true"
-                fields="bokid,,tittel,pdato:date,isbn,antallSider:number" table="bok">
-            <span slot="heading">Rediger bok</span>
+                fields="bokid,tittel,pdato:date,isbn,antallsider:number" table="bok">
+            <span slot="heading">Rediger Bok</span>
         </db-update>
 
         <div class="table">
-            <db-table connected="form:bokid" fields="tilstand" sql="select * from eksemplar">
-                <span slot="caption">Bøker av valgt forfatter</span>
+            <db-table connected="form:bokid" fields="eksemplarid,tilstand" sql="select * from eksemplar">
+                <span slot="caption">Eksemplar av valgt bok</span>
             </db-table>
 
-            <db-table connected="form:forfatterid" fields="antall:number"
-                sql="select count(u.utlaanid) as antall from utlaan u join eksemplar e on (u.eksemplarid=e.eksemplarid) join bok b on (b.bokid=e.bokid)">
-                <span slot="caption">Antall bøker utlånt</span>
+            <db-table connected="form:bokid" fields="antall:number"
+                sql="select count(u.utlaanid) as antall from utlaan u join eksemplar e on (u.eksemplarid=e.eksemplarid)">
+                <span slot="caption">Antall utlån av denne boka</span>
             </db-table>
         </div>
     </div>

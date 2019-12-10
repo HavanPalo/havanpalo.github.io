@@ -21,7 +21,7 @@ const userlist = {
   3: { id: 3, username: "bib2", password: umd5("1235") },
   4: { id: 4, username: "havan", password: umd5("havan") }
 };
-const _username2id = { admin: 1, bib1: 2, bib2: 3, havan: 4 };
+const _username2id = { admin: 1, bib1: 2, bib2: 3, havan: 4};
 
 const _usersById = id => {
   return userlist[id] || { username: "none", password: "" };
@@ -124,9 +124,11 @@ app.post("/runsql", function(req, res) {
   let data = req.body;
   if (req.isAuthenticated()) {
     // kan også ha sjekk på brukernavn
-    if (user.username === "admin"
-    || user.username === "havan") {
+    if (user.username === "admin"){
       runsql(res, data);
+    if (user.username === "havan"){
+      runsql(res, data);
+    }
     } else {
       safesql(user, res, data);
     }
@@ -250,7 +252,7 @@ async function runsql(res, obj) {
     })
     .catch(error => {
       console.log("ERROR:", sql, ":", error.message); // print error;
-      results = {};
+      results = { error:error.message };
     });
   res.send({ results });
 }

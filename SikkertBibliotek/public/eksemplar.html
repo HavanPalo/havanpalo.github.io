@@ -21,7 +21,7 @@
 
     <div id="main">
 
-        <db-table id="table" update="true" fields="tittel,tillstand"
+        <db-table id="table" update="true" fields="tittel,tilstand"
             sql="select e.*, b.tittel from eksemplar e join bok b on (e.bokid = b.bokid)">
             <span slot="caption">Eksemplar</span>
         </db-table>

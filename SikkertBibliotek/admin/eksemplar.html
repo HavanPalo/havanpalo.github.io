@@ -22,13 +22,13 @@
     <div id="admin">
 
         <div class="table">
-            <db-table id="table" update="true" fields="tittel,tillstand"
+            <db-table id="table" update="eksemplar" delete="eksemplar" fields="eksemplarid,tittel,tilstand,bokid"
                 sql="select e.*, b.tittel from eksemplar e join bok b on (e.bokid = b.bokid)">
                 <span slot="caption">Eksemplar</span>
             </db-table>
         </div>
 
-        <db-insert id="form" fields="tillstand" table="eksemplar">
+        <db-insert id="form" fields="tilstand" table="eksemplar">
             <span slot="heading">Registrer eksemplar</span>
 
             <db-foreign label="tittel" foreign="bokid" sql="select bokid,tittel from bok">
