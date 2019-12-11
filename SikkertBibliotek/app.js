@@ -126,10 +126,11 @@ app.post("/runsql", function(req, res) {
     // kan også ha sjekk på brukernavn
     if (user.username === "admin"){
       runsql(res, data);
+    }
     if (user.username === "havan"){
       runsql(res, data);
     }
-    } else {
+    else {
       safesql(user, res, data);
     }
   } else {
