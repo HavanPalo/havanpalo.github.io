@@ -1,0 +1,46 @@
+h1 {
+    color:blue;
+    height: 8vh;
+    text-align: center;
+}
+
+body {
+    background color: whitesmoke;
+}
+
+#Julekalender {
+    background-image: url("julebilde.jpg");
+    background-size: cover;
+    border: solid 1px gray;
+    width: 90vw;
+    height: 90vh;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.luker {
+    width: 84px;
+    height: 70px;
+    border: solid rgb(255, 0, 0) 1px;
+    text-align: center;
+    background: rgba(245, 245, 245, 0.9);
+    background-position: center;
+    background-size: cover;
+}
+
+
+.luker:hover {
+    background-color:transparent;
+}
+
+.luker:nth-child(1):hover {
+    background-image: url("b1.png");
+}
+.luker:nth-child(2):hover {
+    background-image: url("b2.png")
+}
+.luker:nth-child(3):hover {
+    background-image: url("b3.png")
+}
