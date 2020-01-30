@@ -14,7 +14,7 @@
     display: grid;
     
     grid-template-columns: 2fr 2fr;
-    grid-template-rows: 100vh 100vh;
+    grid-template-rows: 130vh 130vh;
     
     grid-template-areas:
         "vskulder hskulder"
@@ -22,7 +22,7 @@
 
 img {
     position: relative;
-    width: 670px;
+    width: 640px;
    top: 10px;
    left: 10px;
    text-align: center;
