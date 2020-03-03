@@ -1,0 +1,19 @@
+.joint:nth-child(2n+5) {
+    color:red;transform: 
+    translate(20px);}
+.joint:nth-child(3n) {
+    color:blue;transform: 
+    translate(60px);}
+.joint{ 
+    display: grid;
+    border: solid black 1px;
+    width: 50px;
+    justify-content: center;}
+#main {
+    width: 300px;
+    display:grid;
+    grid-template-columns: 2fr;
+    grid-template-rows: repeat(2, 20px);
+    grid-gap: 15px;
+    grid-template-areas:
+    "joint joint" }
