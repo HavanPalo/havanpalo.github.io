@@ -20,7 +20,8 @@
     <div id="admin">
 
         <div class="table">
-            <db-table id="table" update="kunde" fields="kundeid:hidden,fornavn,etternavn,adresse,epost,kjonn,tlf" delete="kunde"
+            <db-table id="table" update="kunde" fields="kundeid:hidden,fornavn,etternavn,adresse,epost,kjonn,tlf" 
+                 delete="kunde"
                 sql="select * from kunde">
                 <span slot="caption">Kunder</span>
             </db-table>

@@ -7,7 +7,7 @@
   "DEFAULT_ROLE" : "kunde",
   "INFO": "LEVEL3 is any user, LEVEL2 is user with role, LEVEL1 is named user, LEVEL0 is admin",
   "LEVEL3": [
-    "select * from vare by navn"
+    "select * from vare order by navn"
   ],
   "LEVEL2": {
     "kunde": [
