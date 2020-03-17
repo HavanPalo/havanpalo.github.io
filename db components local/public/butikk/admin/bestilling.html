@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registrer bestilling</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="/components/DbInsert.js"></script>
+    <script src="/components/DbUpdate.js"></script>
+    <script src="/components/DbAction.js"></script>
+    <script src="/components/DbList.js"></script>
+    <script src="/components/Homebar.js"></script>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+    <home-bar heading="Nettbutikk" crumb="vare" getlinks="/htmlfiler/admin" username="/myself">
+    </home-bar>
+
+    <div id="vareliste">
+        <db-list id="list" cssimport="/css/admin.css" update="vare" fields="navn,pris,bilde"
+            sql="select * from vare order by navn">
+            <div>
+                <label for="${navn}">
+                    <input type="checkbox" id="${navn}">
+                    <figure id="${navn}">
+                        <img src="/media/${bilde}">
+                        <figcaption> ${navn} ${pris}</figcaption>
+                    </figure>
+                </label>
+            </div>
+        </db-list>
+        <div id="buy">
+            <button id="buybut" type="button">Kjøp varene</button>
+        </div>
+    </div>
+    <div id="bestilling">
+        <div id="nota">
+            <div id="adresse">
+                <div><label>Navn <input type="text"></label></div>
+                <div><label>Adresse <input type="text"></label></div>
+                <div><label>Mobil<input type="text"></label></div>
+            </div>
+            <div id="vareliste">
+                <ul>
+                    <li>Vare 1</li>
+                    <li>Vare 2</li>
+                    <li>Vare 3</li>
+                </ul>
+                Pris: 3000kr
+            </div>
+            <div id="betaling">
+                <div><label>Visa<input  name="betaling" type="radio"></label></div>
+                <div><label>MasterCard<input  name="betaling" type="radio"></label></div>
+                <div><label>PayPal<input  name="betaling" type="radio"></label></div>
+            </div>
+            <div>
+                <button id="bekreft">Bekreft ditt kjøp</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let btn = document.getElementById("buybut");
+        let divBestilling = document.getElementById("bestilling");
+        let divVareliste = document.getElementById("vareliste");
+        btn.addEventListener("click", bestillVarer);
+        function bestillVarer() {
+            let valgteVarer = document.querySelector("db-list")._root.querySelectorAll("input:checked");
+            if (valgteVarer.length === 0) {
+                alert("Velg varer først");
+                return;
+            }
+            divBestilling.style.display = "block";
+            divVareliste.style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

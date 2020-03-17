@@ -1,0 +1,174 @@
+/**
+  css for et bibliotek med custom components for
+  å manipulere databasen
+**/
+
+
+:root {
+  --light-grad: linear-gradient(125deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .16));
+  --dark-grad: linear-gradient(125deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, .16));
+  --compWidth: 30em;
+}
+
+
+#admin {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#admin>* {
+  justify-self: center;
+}
+
+.table {
+  width: var(--compWidth);
+
+}
+
+#form {}
+
+home-bar {
+  /* --grad: var(--light-grad); */
+}
+
+db-table {
+  margin: 2em;
+  --alternate: rgba(188, 208, 228, 0.555);
+  --head: oldlace;
+}
+
+#total {
+  --tsize: 150px;
+}
+
+.total {
+  color: red;
+}
+
+@media screen and (max-width: 1550px) {
+
+  #username,
+  #info {
+    display: none;
+  }
+
+  #admin {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 1054px) {
+
+  #username,
+  #info {
+    display: none;
+  }
+
+  #admin {
+    grid-template-columns: 1fr;
+  }
+}
+
+#main {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+  grid-template-rows: repeat(auto-fit,minmax(200px,1fr));
+}
+
+#main input {
+  opacity: 0;
+}
+#main figure {
+  border: solid transparent 4px;
+  position: relative;
+}
+
+#main input:checked ~ figure:before {
+  text-align: center;
+  top: -8px;
+  left: -8px;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: rgba(199, 194, 194, 0.575);
+  content: "✔";
+  font-size: 24px;
+  color:green;
+  position: absolute;
+}
+
+@media print {
+  home-bar {
+    display: none;
+  }
+}
+
+#bestilling {
+  display:none;
+}
+
+#buy {
+  text-align: center;
+  width: 20rem;
+  margin-left:auto;
+  margin-right:auto;
+}
+#buy button {
+  outline: none;
+  width:10rem;
+  height: 3rem;
+  background-color: green;
+  color:white;
+  font-size: 1.2rem;
+  border-radius: 9px;
+  box-shadow: 2px 2px 2px gray;
+}
+
+#buy button:active {
+  box-shadow: none;
+  transform: translate(2px,2px);
+}
+
+#nota {
+  margin: 3rem;
+  padding: 2rem;
+  width:210mm;
+  height: 297mm;
+  margin-right: auto;
+  margin-left:auto;
+  background-color: whitesmoke;
+  border-radius: 4px;
+  box-shadow: 2px 2px 3px gray;
+}
+
+#adresse,#vareliste,#betaling {
+  width: 80%;
+  margin: 4rem;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#adresse {
+  background-color: rgba(0, 0, 255, .02);
+}
+
+#betaling {
+  background-color: rgba(255, 0, 0, .02);
+}
+
+#vareliste {
+  background-color: rgba(0, 255,0, .02);
+}
+
+#adresse > div {
+  margin: ;
+}
+
+#adresse  label {
+  display:grid;
+  grid-template-columns: 1fr 3fr;
+}
