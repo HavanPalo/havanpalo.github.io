@@ -1,44 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Mine filer</title>
-    <link rel="stylesheet" href="meny.css">
+    <title>Havan Palo | Prosjekter</title>
+    <meta name="description" content="Samling av skoleprosjekter, eksperimenter og webutvikling.">
+    <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
-    <header>
-        <h1>Index</h1>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <ul id="meny">
-            <li><a href="index.html">Hovedside</a></li>
-            <li><a href="Plan/plan.html">Læreplan i IT 1</a></li>
-            <li><a href="Prosjekt/index.html">Fysikk 1</a></li>
-            <li><a href="Datamaskin/datamaskin.html">Datamaskin</a></li>
-            <li><a href="Datamaskin/cpu.html">CPU</a></li>
-            <li><a href="Menyer/meny.html">Meny</a></li>
-            <li><a href="Posisjon/pos.html">Fugl</a></li>
-            <li><a href="GridArea/gridarea.html">Grid Area</a></li>
-            <li><a href="ProsjektPlan/plan.html">Prosjekt Plan</a></li>
-            <li><a href="JSPaint/paint.html">JSPaint</a></li>
-        </ul>
-        <br>
-        <br>
-        <br>
+    <header class="global-nav">
+        <div class="nav-inner">
+            <a class="brand" href="index.html">HavanPalo</a>
+            <nav aria-label="Hovedmeny">
+                <ul id="meny">
+                    <li><a href="#latest">Latest</a></li>
+                    <li><a href="/archive/archive.html">Archive</a></li>
+                    <li><a href="#aboutMe">About Me</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
-    <ul>
-        <h2>Klassen</h2>
-        <li><a href="https://benjy2k1.github.io">Benny</a></li>
-        <li><a href="https://sveinisdahl.github.io">Svein</a></li>
 
-    </ul>
+    <main>
+        <section class="hero panel hero-panel">
+            <p class="hero-kicker">
+                <a href="https://github.com/HavanPalo">Github</a>
+            </p>
+            <h1>Portfolio</h1>
+            <p class="hero-text"></p>
+        </section>
+
+        <section id="Latest" class="panel dark-panel">
+            <p class="panel-label">2026</p>
+            <h2>Latest</h2>
+            <p class="panel-subtitle"></p>
+            <div class="quick-links">
+                <a href="https://github.com/oysteirm/TTK4145-26V">Elevator Project</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Havan Palo - 2026</p>
+    </footer>
 </body>
 
 </html>
