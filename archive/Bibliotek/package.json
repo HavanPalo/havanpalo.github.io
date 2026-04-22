@@ -6,7 +6,7 @@
   "author": "havan",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4",
-    "pg-promise": "^8.5.1"
+    "express": "^4.22.1",
+    "pg-promise": "^11.5.5"
   }
 }
