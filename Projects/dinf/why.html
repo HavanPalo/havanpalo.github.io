@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D-INF — Why ships need a data notation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D1512;
+    --bg-alt:#0A100D;
+    --panel:#131F19;
+    --panel-2:#101A15;
+    --line:rgba(255,255,255,0.09);
+    --line-soft:rgba(255,255,255,0.05);
+    --green:#5FC189;
+    --green-dim:rgba(95,193,137,0.14);
+    --gold:#F2C14E;
+    --gold-dim:rgba(242,193,78,0.14);
+    --ink:#F3F7F4;
+    --ink-dim:#A9BEB1;
+    --ink-faint:#63776A;
+    --radius:18px;
+    --radius-sm:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--green); color:#0A100D; }
+  h1,h2,h3,h4{ font-family:'Manrope',sans-serif; margin:0; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:1180px; margin:0 auto; padding-left:32px; padding-right:32px; }
+
+  /* ---------------- nav ---------------- */
+  nav{
+    position:sticky; top:0; z-index:60; display:flex; align-items:center; justify-content:space-between;
+    padding:22px 32px; background:rgba(13,21,18,0.85); backdrop-filter:blur(10px); border-bottom:1px solid var(--line-soft);
+  }
+  .logo{ display:flex; align-items:center; gap:9px; font-weight:800; font-size:19px; letter-spacing:-0.01em; }
+  .logo .mark{ width:26px; height:26px; border-radius:8px; background:var(--green); display:flex; align-items:center; justify-content:center; color:#0A100D; font-size:13px; font-weight:800; }
+  .navlinks{ display:flex; gap:34px; font-size:14.5px; color:var(--ink-dim); font-weight:500; }
+  .navlinks a:hover{ color:var(--ink); }
+  .navcta{ font-size:13.5px; font-weight:600; padding:9px 18px; border-radius:100px; border:1px solid var(--line); color:var(--ink-dim); white-space:nowrap; }
+  .navcta:hover{ border-color:var(--green); color:var(--green); }
+  .page-links{ display:flex; gap:12px; align-items:center; }
+  .page-links a{ font-size:13px; color:var(--ink-dim); padding:6px 10px; border-radius:8px; background:transparent; border:1px solid transparent; }
+  .page-links a:hover{ color:var(--ink); border-color:var(--line); }
+  @media (max-width:860px){ .navlinks{ display:none; } }
+
+  /* ---------------- section rhythm ---------------- */
+  section{ padding:150px 0; }
+  section:first-of-type{ padding-top:0; }
+  .eyebrow{ font-size:13px; font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px; }
+  h2.h{ font-weight:800; font-size:clamp(28px,3.6vw,42px); letter-spacing:-0.02em; margin-bottom:18px; max-width:700px; }
+  p.section-sub{ font-size:16.5px; color:var(--ink-dim); line-height:1.7; max-width:600px; margin-bottom:56px; }
+
+  /* ---------------- hero ---------------- */
+  .hero{ padding-top:110px; padding-bottom:60px; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; background:var(--green-dim); color:var(--green); font-size:13px; font-weight:600; padding:7px 14px; border-radius:100px; margin-bottom:32px; }
+  .kicker::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--green); }
+  h1.headline{ font-weight:800; letter-spacing:-0.025em; line-height:1.03; font-size:clamp(38px,6.4vw,76px); max-width:920px; margin-bottom:28px; }
+  h1.headline em{ color:var(--green); font-style:normal; }
+  p.sub{ font-size:18.5px; line-height:1.65; color:var(--ink-dim); max-width:600px; margin-bottom:40px; }
+  .cta-row{ display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
+  .btn-primary{ background:var(--green); color:#0A100D; font-weight:700; font-size:14.5px; padding:14px 26px; border-radius:100px; }
+  .btn-primary:hover{ background:#72d19a; }
+  .btn-ghost{ font-weight:600; font-size:14.5px; color:var(--ink-dim); border-bottom:2px solid var(--line); padding-bottom:2px; }
+  .btn-ghost:hover{ color:var(--ink); border-color:var(--ink-dim); }
+
+  .stat-strip{ display:flex; gap:60px; margin-top:80px; padding-top:40px; border-top:1px solid var(--line-soft); flex-wrap:wrap; }
+  .stat b{ font-size:34px; font-weight:800; display:block; color:var(--ink); }
+  .stat span{ font-size:13px; color:var(--ink-faint); }
+
+  /* ---------------- what is it ---------------- */
+  .explainer-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+  @media (max-width:900px){ .explainer-grid{ grid-template-columns:1fr; } }
+  .explainer-grid p{ font-size:16px; line-height:1.75; color:var(--ink-dim); margin:0 0 20px; }
+  .explainer-grid p b{ color:var(--ink); font-weight:600; }
+  .mini-flow{ display:flex; align-items:center; gap:0; flex-wrap:wrap; }
+  .flow-node{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px; font-size:13px; font-weight:600; text-align:center; min-width:110px; }
+  .flow-node span{ display:block; font-size:10.5px; font-weight:500; color:var(--ink-faint); margin-top:4px; }
+  .flow-arrow{ color:var(--ink-faint); padding:0 10px; font-size:18px; }
+
+  /* ---------------- who's doing this ---------------- */
+  .company-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  @media (max-width:900px){ .company-grid{ grid-template-columns:1fr; } }
+  .company-card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:30px 28px; transition:transform .2s ease, border-color .2s ease; }
+  .company-card:hover{ transform:translateY(-3px); border-color:var(--line-soft); }
+  .company-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .company-name{ font-family:'Manrope',sans-serif; font-weight:800; font-size:20px; }
+  .badge{ font-size:11px; font-weight:700; padding:5px 12px; border-radius:100px; white-space:nowrap; }
+  .badge.s{ color:var(--green); background:var(--green-dim); }
+  .badge.aip{ color:var(--gold); background:var(--gold-dim); }
+  .company-card p{ color:var(--ink-dim); font-size:14.5px; line-height:1.7; margin:0 0 14px; }
+  .company-meta{ font-size:12.5px; color:var(--ink-faint); padding-top:14px; border-top:1px solid var(--line-soft); }
+
+  /* ---------------- why bother ---------------- */
+  .why-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  @media (max-width:900px){ .why-grid{ grid-template-columns:1fr; } }
+  .why-item{ background:var(--panel); padding:34px 30px; }
+  .why-item .num{ font-size:12px; font-weight:700; color:var(--green); letter-spacing:0.06em; margin-bottom:14px; display:block; }
+  .why-item h4{ font-size:19px; font-weight:800; margin-bottom:10px; }
+  .why-item p{ color:var(--ink-dim); font-size:14.5px; line-height:1.7; margin:0; }
+
+  .counter{ margin-top:56px; background:var(--panel-2); border:1px solid var(--line); border-radius:var(--radius); padding:32px 34px; display:flex; gap:20px; align-items:flex-start; }
+  .counter .mark2{ width:40px; height:40px; border-radius:10px; background:var(--gold-dim); color:var(--gold); display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0; }
+  .counter p{ margin:0; color:var(--ink-dim); font-size:14.5px; line-height:1.7; }
+  .counter p b{ color:var(--ink); }
+
+  /* ---------------- footer ---------------- */
+  footer{ margin-top:150px; background:var(--bg-alt); border-top:1px solid var(--line-soft); padding:80px 0 40px; }
+  .footer-wordmark{ font-weight:800; font-size:clamp(48px,9vw,120px); letter-spacing:-0.03em; color:rgba(255,255,255,0.08); line-height:1; margin-bottom:50px; }
+  .footer-grid{ display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px; padding-bottom:50px; border-bottom:1px solid var(--line-soft); }
+  @media (max-width:800px){ .footer-grid{ grid-template-columns:1fr; } }
+  .footer-col h5{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-faint); margin-bottom:16px; }
+  .footer-col p, .footer-col a{ font-size:14px; color:var(--ink-dim); line-height:1.8; display:block; }
+  .footer-col a:hover{ color:var(--green); }
+  .footer-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:28px; font-size:12.5px; color:var(--ink-faint); flex-wrap:wrap; gap:12px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><span class="mark">D</span>D-INF</div>
+  <div class="navlinks">
+    <a href="#what">What it is</a>
+    <a href="#adopters">Who's using it</a>
+    <a href="#why">Why bother</a>
+  </div>
+  <div class="page-links">
+    <a href="index.html">Index</a>
+    <a href="dinf.html">Overview</a>
+    <a href="dinf_details.html">Details</a>
+    <a href="why.html">Why</a>
+  </div>
+  <a class="navcta" href="d-inf-remota-style.html">Technical deep-dive →</a>
+</nav>
+
+<div class="wrap hero">
+  <div class="kicker">DNV additional class notation · Pt.6 Ch.11</div>
+  <h1 class="headline">Your ship generates data. <em>Prove it can be trusted.</em></h1>
+  <p class="sub">D-INF is DNV's notation for the pipe the data runs through — sensor to vessel server to shore — not the sensors themselves. Get it right, and every system downstream can finally rely on what the ship is telling it.</p>
+  <div class="cta-row">
+    <a class="btn-primary" href="#adopters">See who already has it</a>
+    <a class="btn-ghost" href="#why">Why would anyone bother? ↓</a>
+  </div>
+
+  <div class="stat-strip">
+    <div class="stat"><b>2021</b><span>Notation entered into force</span></div>
+    <div class="stat"><b>3</b><span>Qualifiers — Essential, Generic, Standardized</span></div>
+    <div class="stat"><b>3 yrs</b><span>Minimum history required onshore</span></div>
+  </div>
+</div>
+
+<section id="what" class="wrap">
+  <div class="eyebrow">The short version</div>
+  <h2 class="h">One notation, so everyone stops rebuilding the pipe</h2>
+  <div class="explainer-grid">
+    <div>
+      <p>Every sensor, engine, and control system on a modern vessel produces data. The problem was never generating it — it was getting it off the ship in a form <b>anyone downstream could actually trust</b>: consistent timestamps, preserved quality codes, no silent gaps, no vendor lock-in.</p>
+      <p>D-INF doesn't certify your sensors or your analytics. It certifies the <b>infrastructure in between</b> — the vessel server that buffers it, the relay that moves it, and the shore server that stores it — so that whoever builds on top of that data isn't building on sand.</p>
+      <p>Three qualifiers cover three levels of ambition: a fully custom pipe for one use case, a flexible but proprietary one, or one built to a published standard that any compliant system can plug into.</p>
+    </div>
+    <div>
+      <div class="mini-flow">
+        <div class="flow-node">Sensors<span>on board</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Vessel server<span>buffer, 30 days</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Relay<span>secure transport</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Shore server<span>3 year history</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="adopters" class="wrap">
+  <div class="eyebrow">Not theoretical</div>
+  <h2 class="h">Who's already carrying the notation</h2>
+  <p class="section-sub">D-INF launched in 2021. It's since been picked up by shipyards and system integrators building the digital backbone into new tonnage.</p>
+
+  <div class="company-grid">
+    <div class="company-card">
+      <div class="company-top"><span class="company-name">Samsung Heavy Industries</span><span class="badge s">D-INF(S)</span></div>
+      <p>SHI's onboard platform, <b>SVESSEL® BIG</b>, became a first-of-kind standardized data infrastructure — a core part of the digitally enabled vessels SHI now offers as standard.</p>
+      <div class="company-meta">First D-INF(S) type approval, awarded jointly with COSCO — 2023</div>
+    </div>
+    <div class="company-card">
+      <div class="company-top"><span class="company-name">COSCO Shipping</span><span class="badge s">D-INF(S)</span></div>
+      <p>One of the world's largest shipping groups, certifying its data infrastructure to a published standard so fleet-wide data stays usable regardless of which yard or vendor built the ship.</p>
+      <div class="company-meta">First D-INF(S) type approval, awarded jointly with SHI — 2023</div>
+    </div>
+    <div class="company-card">
+      <div class="company-top"><span class="company-name">Kongsberg Digital</span><span class="badge s">D-INF</span></div>
+      <p>One of the three initial approval projects that proved out the notation at all — validating that a real, deployed digital infrastructure could meet DNV's requirements end to end.</p>
+      <div class="company-meta">Among the first three D-INF approvals — 2022</div>
+    </div>
+    <div class="company-card">
+      <div class="company-top"><span class="company-name">Jiangnan Shipyard</span><span class="badge aip">AiP</span></div>
+      <p>Its Jiangnan Intelligent System, <b>JNIS (DATA)</b>, earned an Approval in Principle under D-INF(S) — architecture built to expand into remote inspection and data-driven verification.</p>
+      <div class="company-meta">D-INF(S) Approval in Principle — 2025</div>
+    </div>
+  </div>
+</section>
+
+<section id="why" class="wrap">
+  <div class="eyebrow">The actual question</div>
+  <h2 class="h">Why would anyone bother doing this?</h2>
+  <p class="section-sub">Certifying a data pipe sounds like paperwork for its own sake. It isn't — here's what it's actually buying a shipowner or yard.</p>
+
+  <div class="why-grid">
+    <div class="why-item">
+      <span class="num">01</span>
+      <h4>It's the on-ramp to cheaper surveys</h4>
+      <p>Remote and data-driven verification (DDV) — annual trials done from shore instead of a surveyor flying out — depends on trustworthy data. D-INF is the prerequisite most of those programs are quietly built on top of.</p>
+    </div>
+    <div class="why-item">
+      <span class="num">02</span>
+      <h4>It stops you rebuilding the pipe per vendor</h4>
+      <p>Without a standard, every OEM ships its own proprietary data format. A standardized (S) infrastructure means a new sensor, engine, or analytics platform can plug into what's already there instead of triggering a fresh integration project.</p>
+    </div>
+    <div class="why-item">
+      <span class="num">03</span>
+      <h4>It's what makes fleet-wide analytics possible</h4>
+      <p>Predictive maintenance, fuel optimization, emissions reporting — all of it needs consistent, gap-free, correctly time-stamped data across every ship in the fleet, not just the newest one.</p>
+    </div>
+    <div class="why-item">
+      <span class="num">04</span>
+      <h4>It's cheap to get, expensive to skip</h4>
+      <p>Data quality management and cyber security management stay optional until you actually need them for another notation. You're not signing up for the whole stack — just the plumbing, now, while it's simple to specify at newbuild.</p>
+    </div>
+  </div>
+
+  <div class="counter">
+    <div class="mark2">i</div>
+    <p><b>The honest counterpoint:</b> if your vessel only ever needs one bespoke integration for one use case, the Essential qualifier — or no notation at all — may genuinely be enough. D-INF earns its cost when data needs to outlive the system that first collected it.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-wordmark">D-INF</div>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h5>Source</h5>
+        <p>DNV-RU-SHIP Pt.6 Ch.11 "Digital features," Sec.1 — Edition July 2025, read alongside DNV-CG-0564 "Data collection infrastructure," Edition January 2025. Adopter examples drawn from DNV's public announcements, 2022–2025.</p>
+      </div>
+      <div class="footer-col">
+        <h5>On this page</h5>
+        <a href="#what">What it is</a>
+        <a href="#adopters">Who's using it</a>
+        <a href="#why">Why bother</a>
+      </div>
+      <div class="footer-col">
+        <h5>Note</h5>
+        <p>Unofficial summary for orientation only. The PDF editions on dnv.com are the governing text for certification purposes.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Not affiliated with or endorsed by DNV AS.</span>
+      <span>Built for orientation, not for submission.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
