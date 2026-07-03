@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D-INF — Data Collection Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A1B2C;
+    --bg-panel:#0F2740;
+    --bg-panel-2:#0C2136;
+    --grid:rgba(130,190,225,0.07);
+    --line:#25455F;
+    --line-bright:#3A6789;
+    --ink:#E9F3F8;
+    --ink-dim:#8FA8BC;
+    --ink-faint:#5C7A8F;
+    --essential:#8A97A6;
+    --generic:#F2A93B;
+    --standard:#4FD1C5;
+    --paper:#F4EFE3;
+    --danger:#E0654F;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/40px 40px,
+      var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--generic);color:#0A1B2C;}
+
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .display{font-family:'Space Grotesk',sans-serif;}
+
+  a{color:inherit;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+    background:rgba(10,27,44,0.88);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{
+    display:flex; align-items:baseline; gap:10px;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:0.02em;
+    font-size:18px;
+  }
+  .brand .tag{
+    font-family:'IBM Plex Mono',monospace; font-weight:400; font-size:11px;
+    color:var(--ink-dim); letter-spacing:0.08em; text-transform:uppercase;
+  }
+  .legend{display:flex; gap:18px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-dim);}
+  .legend span{display:flex; align-items:center; gap:6px;}
+  .dot{width:8px; height:8px; border-radius:50%; display:inline-block;}
+  .dot.essential{background:var(--essential);}
+  .dot.generic{background:var(--generic);}
+  .dot.standard{background:var(--standard);}
+  @media (max-width:780px){ .legend{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    max-width:1180px; margin:0 auto; padding:64px 28px 20px;
+  }
+  .stamp{
+    display:inline-flex; align-items:center; gap:10px;
+    border:1px solid var(--line-bright);
+    padding:6px 12px;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--ink-dim);
+    margin-bottom:28px;
+  }
+  .stamp b{color:var(--generic); font-weight:600;}
+  h1.title{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(44px,7vw,92px);
+    line-height:0.96;
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  h1.title .sub{
+    display:block; font-size:0.28em; font-weight:500; color:var(--ink-dim); margin-top:14px; letter-spacing:0;
+  }
+  .lede{
+    max-width:640px; font-size:17px; line-height:1.65; color:#C7D9E5; margin:22px 0 8px;
+  }
+  .source-note{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint); margin-top:18px;
+  }
+
+  /* ---------- diagram ---------- */
+  .diagram-wrap{
+    max-width:1180px; margin:56px auto 0; padding:0 28px;
+  }
+  .qualifier-switch{
+    display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap;
+  }
+  .qbtn{
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px;
+    background:transparent; color:var(--ink-dim);
+    border:1px solid var(--line); padding:9px 16px;
+    cursor:pointer; letter-spacing:0.02em;
+    transition:all .18s ease;
+  }
+  .qbtn:hover{border-color:var(--line-bright); color:var(--ink);}
+  .qbtn.active[data-q="essential"]{background:var(--essential); border-color:var(--essential); color:#0A1B2C; font-weight:600;}
+  .qbtn.active[data-q="generic"]{background:var(--generic); border-color:var(--generic); color:#0A1B2C; font-weight:600;}
+  .qbtn.active[data-q="standard"]{background:var(--standard); border-color:var(--standard); color:#0A1B2C; font-weight:600;}
+
+  .diagram-panel{
+    border:1px solid var(--line);
+    background:var(--bg-panel-2);
+    padding:28px 20px 14px;
+    position:relative;
+    overflow-x:auto;
+  }
+  .diagram-panel::before{
+    content:attr(data-caption);
+    position:absolute; top:10px; left:20px;
+    font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink-faint);
+    letter-spacing:0.08em; text-transform:uppercase;
+  }
+  svg#flow{ display:block; width:100%; min-width:760px; height:auto; }
+  .node-box{ fill:var(--bg-panel); stroke:var(--line-bright); stroke-width:1.5; transition:all .25s ease; }
+  .node-box.ghost{ fill:transparent; stroke:var(--ink-faint); stroke-dasharray:4 4; opacity:0.55;}
+  .node-box.hot{ stroke-width:2; }
+  .node-label{ font-family:'Space Grotesk',sans-serif; font-weight:600; fill:var(--ink); font-size:14px; }
+  .node-sub{ font-family:'IBM Plex Mono',monospace; fill:var(--ink-dim); font-size:10px; }
+  .layer-label{ font-family:'IBM Plex Mono',monospace; fill:var(--ink-faint); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; }
+  .flow-line{ stroke:var(--line-bright); stroke-width:1.5; fill:none; marker-end:url(#arrow); transition:stroke .25s ease; }
+  .flow-line.faint{ stroke:var(--ink-faint); stroke-dasharray:3 4; opacity:0.5; }
+  .proto-tag{ font-family:'IBM Plex Mono',monospace; font-size:10px; fill:var(--ink-dim); transition:fill .25s ease; }
+  .proto-tag.hot{ font-weight:600; }
+
+  .diagram-note{
+    margin-top:8px; padding:14px 4px 4px;
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-dim); line-height:1.6;
+    border-top:1px dashed var(--line);
+  }
+  .diagram-note b{color:var(--ink); font-weight:600;}
+
+  /* ---------- section shell ---------- */
+  section{ max-width:1180px; margin:0 auto; padding:88px 28px 0; }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--ink-faint); margin-bottom:10px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:22px; height:1px; background:var(--line-bright);}
+  h2.h{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(26px,3.4vw,38px);
+    margin:0 0 14px; letter-spacing:-0.01em;
+  }
+  p.section-lede{ max-width:640px; color:#B9CDDC; line-height:1.65; font-size:15.5px; margin-bottom:36px;}
+
+  /* ---------- qualifier cards ---------- */
+  .cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  @media (max-width:900px){ .cards{grid-template-columns:1fr;} }
+  .card{ background:var(--bg-panel-2); padding:26px 22px 22px; position:relative; }
+  .card .bar{ position:absolute; top:0; left:0; right:0; height:3px; }
+  .card.essential .bar{background:var(--essential);}
+  .card.generic .bar{background:var(--generic);}
+  .card.standard .bar{background:var(--standard);}
+  .card-code{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; margin-bottom:6px; }
+  .card.essential .card-code{color:var(--essential);}
+  .card.generic .card-code{color:var(--generic);}
+  .card.standard .card-code{color:var(--standard);}
+  .card h3{ font-family:'Space Grotesk',sans-serif; font-size:20px; margin:0 0 12px; }
+  .card p{ color:#B9CDDC; font-size:14px; line-height:1.6; margin:0 0 16px; }
+  .card ul{ margin:0; padding-left:18px; color:var(--ink-dim); font-size:13px; line-height:1.8; }
+  .card ul li::marker{ color:var(--ink-faint); }
+  .maps-to{
+    margin-top:18px; padding-top:14px; border-top:1px dashed var(--line);
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint);
+  }
+  .maps-to b{color:var(--ink-dim); font-weight:600;}
+
+  /* ---------- architecture components ---------- */
+  .arch-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media (max-width:900px){ .arch-grid{grid-template-columns:1fr;} }
+  .comp{
+    border:1px solid var(--line); padding:20px; background:var(--bg-panel-2);
+    transition:border-color .2s ease, opacity .2s ease;
+  }
+  .comp .num{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint); margin-bottom:10px;}
+  .comp h4{ font-family:'Space Grotesk',sans-serif; font-size:17px; margin:0 0 10px; }
+  .comp .req{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; padding:3px 8px; border:1px solid var(--line-bright);
+    color:var(--ink-dim); display:inline-block; margin-bottom:12px;
+  }
+  .comp p{ color:var(--ink-dim); font-size:13.5px; line-height:1.65; margin:0; }
+  .comp.dim{ opacity:0.35; }
+
+  /* ---------- process ---------- */
+  .process{ position:relative; padding-left:26px; }
+  .process::before{ content:''; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--line-bright); }
+  .step{ position:relative; padding-bottom:34px; }
+  .step:last-child{ padding-bottom:0; }
+  .step::before{
+    content:''; position:absolute; left:-26px; top:3px; width:11px; height:11px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--generic);
+  }
+  .step .stepnum{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--generic); letter-spacing:0.08em; text-transform:uppercase; }
+  .step h4{ font-family:'Space Grotesk',sans-serif; font-size:18px; margin:6px 0 8px; }
+  .step p{ color:var(--ink-dim); font-size:14px; line-height:1.65; max-width:620px; margin:0; }
+  .step .optional-flag{
+    display:inline-block; margin-top:10px; font-family:'IBM Plex Mono',monospace; font-size:10.5px;
+    color:var(--danger); border:1px solid var(--danger); padding:2px 8px;
+  }
+
+  /* ---------- documentation table ---------- */
+  .doc-filter{ display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  table.doctable{ width:100%; border-collapse:collapse; font-size:13px; }
+  table.doctable th{
+    text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--ink-faint); border-bottom:1px solid var(--line-bright); padding:10px 12px;
+  }
+  table.doctable td{ padding:12px; border-bottom:1px solid var(--line); color:var(--ink-dim); vertical-align:top; }
+  table.doctable tr td:first-child{ color:var(--ink); font-weight:500; white-space:nowrap; }
+  table.doctable .info-tag{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; padding:2px 6px; border:1px solid var(--line-bright);
+  }
+  table.doctable .info-tag.AP{ color:var(--generic); border-color:var(--generic); }
+  table.doctable .info-tag.FI{ color:var(--ink-dim); }
+  tr.hide-row{ display:none; }
+
+  /* ---------- footer ---------- */
+  footer{
+    max-width:1180px; margin:100px auto 0; padding:28px 28px 60px;
+    border-top:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-faint); line-height:1.8;
+  }
+  footer b{ color:var(--ink-dim); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">D-INF <span class="tag">DNV-RU-SHIP Pt.6 Ch.11 Sec.1</span></div>
+  <div class="legend">
+    <span><i class="dot essential"></i>Essential</span>
+    <span><i class="dot generic"></i>Generic (G)</span>
+    <span><i class="dot standard"></i>Standardized (S)</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="stamp">Additional class notation &nbsp;·&nbsp; <b>D-INF</b> &nbsp;·&nbsp; Edition July 2025</div>
+  <h1 class="title">Data collection<br>infrastructure<span class="sub">how a vessel earns the D-INF notation, and what changes between its three qualifiers</span></h1>
+  <p class="lede">D-INF standardizes how data moves from sensors on a vessel to a server on shore — reliably, securely, and in a form DNV can verify. It doesn't touch the source systems themselves. It governs everything downstream of them.</p>
+  <p class="source-note">Reference: DNV-RU-SHIP Pt.6 Ch.11 Sec.1, built on the functional requirements in DNV-CG-0564.</p>
+</div>
+
+<div class="diagram-wrap">
+  <div class="qualifier-switch" role="tablist" aria-label="Select D-INF qualifier">
+    <button class="qbtn active" data-q="essential">D-INF — no qualifier (essential)</button>
+    <button class="qbtn" data-q="generic">D-INF(G) — generic</button>
+    <button class="qbtn" data-q="standard">D-INF(S) — standardized</button>
+  </div>
+
+  <div class="diagram-panel" data-caption="Vessel → shore data path">
+    <svg id="flow" viewBox="0 0 1100 300" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#3A6789"></path>
+        </marker>
+      </defs>
+
+      <!-- layer labels -->
+      <text x="60" y="26" class="layer-label">L2 · source</text>
+      <text x="330" y="26" class="layer-label">L3 · vessel server</text>
+      <text x="600" y="26" class="layer-label">L3.5 · data relay / DMZ</text>
+      <text x="870" y="26" class="layer-label">L4 · remote data server</text>
+
+      <!-- source system -->
+      <rect x="30" y="110" width="150" height="70" rx="2" class="node-box"></rect>
+      <text x="105" y="140" text-anchor="middle" class="node-label">Source</text>
+      <text x="105" y="158" text-anchor="middle" class="node-label">system(s)</text>
+
+      <!-- vessel server -->
+      <rect id="vessel-box" x="290" y="100" width="170" height="90" rx="2" class="node-box hot"></rect>
+      <text x="375" y="136" text-anchor="middle" class="node-label">Vessel</text>
+      <text x="375" y="154" text-anchor="middle" class="node-label">server</text>
+      <text id="vessel-sub" x="375" y="174" text-anchor="middle" class="node-sub">buffer · 30 day min</text>
+
+      <!-- local data consumer -->
+      <rect x="310" y="20" width="130" height="46" rx="2" class="node-box" opacity="0.6"></rect>
+      <text x="375" y="48" text-anchor="middle" class="node-sub" style="font-size:11px;">local consumer</text>
+      <path d="M375,66 L375,100" class="flow-line faint"></path>
+
+      <!-- data relay -->
+      <rect x="560" y="105" width="150" height="80" rx="2" class="node-box"></rect>
+      <text x="635" y="140" text-anchor="middle" class="node-label">Data relay</text>
+      <text x="635" y="158" text-anchor="middle" class="node-label">component</text>
+
+      <!-- remote data server -->
+      <rect x="840" y="100" width="170" height="90" rx="2" class="node-box"></rect>
+      <text x="925" y="136" text-anchor="middle" class="node-label">Remote data</text>
+      <text x="925" y="154" text-anchor="middle" class="node-label">server</text>
+      <text x="925" y="174" text-anchor="middle" class="node-sub">3 yr history min</text>
+
+      <!-- remote consumer -->
+      <rect x="860" y="220" width="130" height="46" rx="2" class="node-box" opacity="0.6"></rect>
+      <text x="925" y="248" text-anchor="middle" class="node-sub" style="font-size:11px;">remote consumer</text>
+      <path d="M925,190 L925,220" class="flow-line faint"></path>
+
+      <!-- main path lines -->
+      <path id="line-1" d="M180,145 L290,145" class="flow-line"></path>
+      <path id="line-2" d="M460,145 L560,145" class="flow-line"></path>
+      <path id="line-3" d="M710,145 L840,145" class="flow-line"></path>
+      <!-- essential bypass line (source straight to relay) -->
+      <path id="line-bypass" d="M105,180 C105,240 560,240 560,165" class="flow-line faint" style="display:none;"></path>
+
+      <!-- protocol tags -->
+      <text id="proto-1" x="235" y="130" text-anchor="middle" class="proto-tag"></text>
+      <text id="proto-2" x="510" y="130" text-anchor="middle" class="proto-tag"></text>
+      <text id="proto-3" x="775" y="130" text-anchor="middle" class="proto-tag"></text>
+    </svg>
+    <div class="diagram-note" id="diagram-note"></div>
+  </div>
+</div>
+
+<script>
+const QUALIFIERS = {
+  essential: {
+    vesselRequired:false,
+    vesselSub:'not a required component',
+    proto1:'per use case',
+    proto2:'proprietary',
+    proto3:'proprietary',
+    note:'<b>D-INF (no qualifier).</b> Built for one predefined use case: a specific set of tags, from a specific source system, at a specific rate, to a specific target — proprietary end to end. No vessel server is required; data may pass straight through the relay to the remote server. Maps to CG-0564 <b>variant 0</b>.'
+  },
+  generic: {
+    vesselRequired:true,
+    vesselSub:'buffer · 30 day min · proprietary I/O',
+    proto1:'proprietary protocol',
+    proto2:'proprietary',
+    proto3:'proprietary / optional standard',
+    note:'<b>D-INF(G) — generic.</b> Collects a flexible set of tags from a range of source systems, following D-INF\'s standardized functional requirements — but the actual data interface stays proprietary. No defined external interface is required, though one may be added selectively. Maps to CG-0564 <b>variant 1</b>.'
+  },
+  standard: {
+    vesselRequired:true,
+    vesselSub:'buffer · 30 day min · standardized I/O',
+    proto1:'ISO 19847/19848 or OPC UA + IEC 61162-450',
+    proto2:'standardized interface',
+    proto3:'standardized interface',
+    note:'<b>D-INF(S) — standardized.</b> Same flexible tag collection as Generic, but the interface must follow a published standard: either ISO 19847/19848, or OPC UA client/server with IEC 61162-450 relay and scheduled ISO 19848 exports. Vessel server should sit in its own network segment (e.g. a DMZ). Maps to CG-0564 <b>variant 2 or 3</b>.'
+  }
+};
+
+const vesselBox = document.getElementById('vessel-box');
+const vesselSub = document.getElementById('vessel-sub');
+const bypass = document.getElementById('line-bypass');
+const line1 = document.getElementById('line-1');
+const line2 = document.getElementById('line-2');
+const proto1 = document.getElementById('proto-1');
+const proto2 = document.getElementById('proto-2');
+const proto3 = document.getElementById('proto-3');
+const note = document.getElementById('diagram-note');
+const buttons = document.querySelectorAll('.qbtn');
+
+function paint(q){
+  const d = QUALIFIERS[q];
+  const accent = q==='essential' ? '#8A97A6' : (q==='generic' ? '#F2A93B' : '#4FD1C5');
+
+  vesselSub.textContent = d.vesselSub;
+  proto1.textContent = d.proto1;
+  proto2.textContent = d.proto2;
+  proto3.textContent = d.proto3;
+  note.innerHTML = d.note;
+
+  if(d.vesselRequired){
+    vesselBox.setAttribute('class','node-box hot');
+    vesselBox.style.stroke = accent;
+    bypass.style.display = 'none';
+    line1.style.display = '';
+    line2.style.display = '';
+    proto1.style.display = '';
+    proto1.setAttribute('class','proto-tag hot');
+    proto1.style.fill = accent;
+  } else {
+    vesselBox.setAttribute('class','node-box ghost');
+    vesselBox.style.stroke = '';
+    bypass.style.display = '';
+    line1.style.display = 'none';
+    line2.style.display = 'none';
+    proto1.style.display = 'none';
+  }
+  proto2.setAttribute('class','proto-tag hot');
+  proto2.style.fill = accent;
+  proto3.setAttribute('class','proto-tag hot');
+  proto3.style.fill = accent;
+
+  document.getElementById('line-3').style.stroke = accent;
+  if(d.vesselRequired) line2.style.stroke = accent;
+
+  buttons.forEach(b=>{
+    b.classList.toggle('active', b.dataset.q===q);
+  });
+
+  document.querySelectorAll('.comp').forEach(c=>{
+    const need = c.dataset.needs;
+    if(!need){ c.classList.remove('dim'); return; }
+    c.classList.toggle('dim', !(need==='all' || need===q || (need==='built' && d.vesselRequired)));
+  });
+}
+
+buttons.forEach(b=> b.addEventListener('click', ()=> paint(b.dataset.q)) );
+paint('essential');
+</script>
+
+<!-- ============ THREE ROUTES ============ -->
+<section id="qualifiers">
+  <div class="eyebrow">Section 1.5 — Table 1</div>
+  <h2 class="h">Three ways to hold the notation</h2>
+  <p class="section-lede">Every D-INF certificate is built one of three ways. The qualifier tells you, at a glance, whether the interface is custom, proprietary-but-standardized, or built to a published protocol.</p>
+
+  <div class="cards">
+    <div class="card essential">
+      <div class="bar"></div>
+      <div class="card-code">D-INF · no qualifier</div>
+      <h3>Essential</h3>
+      <p>A predefined set of tags from one specific source system, at a specific rate, with specific quality criteria, to one specific target. Fully customized.</p>
+      <ul>
+        <li>No vessel server required</li>
+        <li>Proprietary protocols throughout</li>
+        <li>Built around a single use case</li>
+      </ul>
+      <div class="maps-to">Maps to CG-0564 <b>variant 0</b></div>
+    </div>
+    <div class="card generic">
+      <div class="bar"></div>
+      <div class="card-code">D-INF(G)</div>
+      <h3>Generic</h3>
+      <p>A flexible set of tags from a range of different source systems. Standardized functional requirements, but the data interface itself stays proprietary.</p>
+      <ul>
+        <li>Vessel server required</li>
+        <li>No defined external interface (may add one selectively)</li>
+        <li>30-day onboard buffer minimum</li>
+      </ul>
+      <div class="maps-to">Maps to CG-0564 <b>variant 1</b></div>
+    </div>
+    <div class="card standard">
+      <div class="bar"></div>
+      <div class="card-code">D-INF(S)</div>
+      <h3>Standardized</h3>
+      <p>Same flexible collection as Generic, but the interface follows a named standard — so any conformant client can talk to it.</p>
+      <ul>
+        <li>ISO 19847 / ISO 19848, <em>or</em></li>
+        <li>OPC UA client/server + IEC 61162-450 relay</li>
+        <li>Vessel server recommended in its own DMZ</li>
+      </ul>
+      <div class="maps-to">Maps to CG-0564 <b>variant 2 or 3</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARCHITECTURE ============ -->
+<section id="architecture">
+  <div class="eyebrow">Section 2 — Requirements</div>
+  <h2 class="h">The three certifiable components</h2>
+  <p class="section-lede">A generic or standardized infrastructure is built from three pieces, each independently certifiable. Use the qualifier switch above — components that don't apply to your selection dim out.</p>
+
+  <div class="arch-grid">
+    <div class="comp" data-needs="built">
+      <div class="num">01 / Onboard</div>
+      <h4>Vessel server</h4>
+      <div class="req">Product Certificate</div>
+      <p>Collects data through one or more interfaces, buffers it, and serves it to local clients. May comprise several hardware components acting as one logical server. Required for Generic and Standardized; skipped entirely under Essential.</p>
+    </div>
+    <div class="comp" data-needs="all">
+      <div class="num">02 / In transit</div>
+      <h4>Data relay component</h4>
+      <div class="req">Product Certificate</div>
+      <p>The mandatory intermediary for every qualifier — a transport network with gateways and bandwidth, or a full third-party infrastructure in its own right. Priority management for at least three traffic levels, plus an API for status, alerts, and transfer-delay logs.</p>
+    </div>
+    <div class="comp" data-needs="all">
+      <div class="num">03 / Onshore</div>
+      <h4>Remote data server</h4>
+      <div class="req">TA or case-by-case</div>
+      <p>Receives data from potentially many vessel servers, persists at least three years of history, and serves it to remote consumers. Can be added at newbuilding or later, once collected data starts feeding other class notations.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CERTIFICATION PATH ============ -->
+<section id="process">
+  <div class="eyebrow">Section 1.8 &amp; Section 3</div>
+  <h2 class="h">Getting — and keeping — the notation</h2>
+  <p class="section-lede">Two activities are mandatory to obtain D-INF. A third exists, but only becomes mandatory once the data is actually put to use elsewhere in class.</p>
+
+  <div class="process">
+    <div class="step">
+      <div class="stepnum">Mandatory · 01</div>
+      <h4>Document the infrastructure</h4>
+      <p>Topology diagrams, function descriptions, inventory lists, bandwidth budgets, and a software change-handling procedure — submitted per component (vessel server, data relay, remote server) or as one end-to-end package.</p>
+    </div>
+    <div class="step">
+      <div class="stepnum">Mandatory · 02</div>
+      <h4>Survey and test on completion</h4>
+      <p>An approved test programme, witnessed by a surveyor: functions and security, UPS capacity, connected source systems, communication management, master clock sync. If the remote server isn't ready yet, its tests can wait for the first annual survey.</p>
+    </div>
+    <div class="step">
+      <div class="stepnum">Result</div>
+      <h4>D-INF is assigned</h4>
+      <p>Retained through successful annual surveys. At this point, data quality management and a cyber security management system (CSMS) are <em>not</em> required.</p>
+    </div>
+    <div class="step">
+      <div class="stepnum">Conditional · 03</div>
+      <h4>Data quality &amp; CSMS</h4>
+      <p>Becomes mandatory only once the collected, relayed data is actually used for another additional notation, an in-operation notation, or another class methodology — not for D-INF on its own.</p>
+      <span class="optional-flag">optional until triggered</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOCUMENTATION ============ -->
+<section id="documentation">
+  <div class="eyebrow">Table 6</div>
+  <h2 class="h">What goes in the submission</h2>
+  <p class="section-lede">A partial view of the documentation set. <span class="mono" style="color:var(--generic)">AP</span> = for approval, <span class="mono" style="color:var(--ink-dim)">FI</span> = for information.</p>
+
+  <div class="doc-filter">
+    <button class="qbtn active" data-filter="all">All objects</button>
+    <button class="qbtn" data-filter="Data collection infrastructure">Infrastructure</button>
+    <button class="qbtn" data-filter="Vessel server">Vessel server</button>
+    <button class="qbtn" data-filter="Relay component">Relay component</button>
+    <button class="qbtn" data-filter="Data quality and security management">Data quality &amp; security</button>
+  </div>
+
+  <table class="doctable">
+    <thead>
+      <tr><th>Object</th><th>Document</th><th>Description</th><th>Info</th></tr>
+    </thead>
+    <tbody id="doc-body">
+      <tr data-obj="Data collection infrastructure"><td>Infrastructure</td><td>System block diagram (I030)</td><td>Logical topology — sources, vessel server(s), transport devices, relay component, target system, security zones/conduits.</td><td><span class="info-tag FI">FI</span></td></tr>
+      <tr data-obj="Data collection infrastructure"><td>Infrastructure</td><td>Inventory list (I071)</td><td>Every component that's part of the solution.</td><td><span class="info-tag FI">FI</span></td></tr>
+      <tr data-obj="Data collection infrastructure"><td>Infrastructure</td><td>List of controlled &amp; monitored points (I110)</td><td>Index of all input tags to the infrastructure.</td><td><span class="info-tag FI">FI</span></td></tr>
+      <tr data-obj="Data collection infrastructure"><td>Infrastructure</td><td>Calculation report (Z265)</td><td>Bandwidth budget — use cases, buffer capacity, recovery requirements; shared relay usage included.</td><td><span class="info-tag FI">FI</span></td></tr>
+      <tr data-obj="Data collection infrastructure"><td>Infrastructure</td><td>Function description (I020)</td><td>Source systems, servers, relay, consumers, protocols, security, connectivity limits, data quality monitoring.</td><td><span class="info-tag FI">FI</span></td></tr>
+      <tr data-obj="Data collection infrastructure"><td>Infrastructure</td><td>Test procedure (Z251)</td><td>Function, connectivity, and security tests for the infrastructure and network.</td><td><span class="info-tag AP">AP</span></td></tr>
+      <tr data-obj="Vessel server"><td>Vessel server</td><td>Type approval certificate (Z283)</td><td>Reference to the vessel server's type approval.</td><td><span class="info-tag AP">AP</span></td></tr>
+      <tr data-obj="Vessel server"><td>Vessel server</td><td>Inventory list (I071)</td><td>Parts included in the vessel server.</td><td><span class="info-tag AP">AP</span></td></tr>
+      <tr data-obj="Vessel server"><td>Vessel server</td><td>List of monitored points (I110)</td><td>Tag names/aliases and the metadata used.</td><td><span class="info-tag AP">AP</span></td></tr>
+      <tr data-obj="Vessel server"><td>Vessel server</td><td>Software change handling (I320)</td><td>Procedure covering configuration, data, and metadata changes.</td><td><span class="info-tag AP">AP</span></td></tr>
+      <tr data-obj="Relay component"><td>Relay component</td><td>Type approval certificate (Z283)</td><td>Reference to the relay component's type approval(s).</td><td><span class="info-tag AP">AP</span></td></tr>
+      <tr data-obj="Relay component"><td>Relay component</td><td>Inventory list (I071)</td><td>Parts included, including transport component and intermediates.</td><td><span class="info-tag AP">AP</span></td></tr>
+      <tr data-obj="Relay component"><td>Relay component</td><td>Test procedure at manufacturer (Z252)</td><td>Manufacturer-side test procedure.</td><td><span class="info-tag AP">AP</span></td></tr>
+      <tr data-obj="Data quality and security management"><td>Data quality &amp; security</td><td>Procedure (Z250)</td><td>Scope, exploring &amp; profiling, evaluation of dimensions/metrics, data quality requirements.</td><td><span class="info-tag AP">AP</span></td></tr>
+      <tr data-obj="Data quality and security management"><td>Data quality &amp; security</td><td>Quality manual (Q010)</td><td>Governing goals, policies, roles, competence, continuous improvement.</td><td><span class="info-tag FI">FI</span></td></tr>
+      <tr data-obj="Data quality and security management"><td>Data quality &amp; security</td><td>Function description (I020)</td><td>Remote server functional requirements, security functions, quality monitoring.</td><td><span class="info-tag AP">AP</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<script>
+  document.querySelectorAll('.doc-filter .qbtn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.doc-filter .qbtn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      document.querySelectorAll('#doc-body tr').forEach(row=>{
+        row.classList.toggle('hide-row', f!=='all' && row.dataset.obj!==f);
+      });
+    });
+  });
+</script>
+
+<footer>
+  <div><b>Source:</b> DNV-RU-SHIP Pt.6 Ch.11 "Digital features", Sec.1 "Data collection infrastructure — D-INF", Edition July 2025 — read alongside DNV-CG-0564 "Data collection infrastructure", Edition January 2025.</div>
+  <div style="margin-top:8px;">Unofficial visual summary for orientation only. For certification purposes, the PDF editions on dnv.com are the governing text.</div>
+</footer>
+
+</body>
+</html>

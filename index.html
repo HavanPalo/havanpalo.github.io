@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Havan Palo</title>
+    <title>Portfolio</title>
     <meta name="description" content="Samling av skoleprosjekter, eksperimenter og webutvikling.">
     <link rel="stylesheet" href="index.css">
 </head>
@@ -13,12 +13,13 @@
 <body>
     <header class="global-nav">
         <div class="nav-inner">
-            <a class="brand" href="index.html">HavanPalo</a>
+            <a class="brand" href="index.html">Home</a>
             <nav aria-label="Hovedmeny">
                 <ul id="meny">
-                    <li><a href="#latest">Latest</a></li>
-                    <li><a href="/archive/archive.html">Archive</a></li>
-                    <li><a href="#aboutMe">About Me</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="archive/archive.html">Archive</a></li>
                 </ul>
             </nav>
         </div>
@@ -30,22 +31,34 @@
                 <a href="https://github.com/HavanPalo">Github</a>
             </p>
             <h1>Portfolio</h1>
-            <p class="hero-text"></p>
+            <p class="hero-text">Portfolio for selected experiments and web work.</p>
+            <div class="hero-actions">
+                <a class="btn-primary" href="projects.html">View projects</a>
+                <a class="btn-link" href="about.html">About me</a>
+            </div>
         </section>
 
-        <section id="Latest" class="panel dark-panel">
-            <p class="panel-label">2026</p>
+        <section class="panel dark-panel">
+            <p class="panel-label">Featured work</p>
             <h2>Latest</h2>
-            <p class="panel-subtitle"></p>
+            <p class="panel-subtitle">A few current projects that show the range of this site.</p>
             <div class="quick-links">
                 <a href="https://github.com/oysteirm/TTK4145-26V">Elevator Project</a>
+                <a href="projects.html#web">Web experiments</a>
+                <a href="archive/archive.html">Full archive</a>
             </div>
+        </section>
+
+        <section class="panel light-panel">
+            <p class="panel-label">Structure</p>
+            <h2>Built to stay simple</h2>
+            <p class="panel-subtitle">One shared visual system across pages, with small sections instead of heavy components.</p>
         </section>
 
     </main>
 
     <footer>
-        <p>Havan Palo - 2026</p>
+        <p>2026</p>
     </footer>
 </body>
 
