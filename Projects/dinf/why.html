@@ -30,7 +30,7 @@
   ::selection{ background:var(--green); color:#0A100D; }
   h1,h2,h3,h4{ font-family:'Manrope',sans-serif; margin:0; }
   a{ color:inherit; text-decoration:none; }
-  .wrap{ max-width:1180px; margin:0 auto; padding-left:32px; padding-right:32px; }
+  .wrap{ max-width:1180px; margin:60px auto; padding-left:32px; padding-right:32px; }
 
   /* ---------------- nav ---------------- */
   nav{
@@ -49,7 +49,7 @@
   @media (max-width:860px){ .navlinks{ display:none; } }
 
   /* ---------------- section rhythm ---------------- */
-  section{ padding:150px 0; }
+  section{ padding:20px 0; }
   section:first-of-type{ padding-top:0; }
   .eyebrow{ font-size:13px; font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px; }
   h2.h{ font-weight:800; font-size:clamp(28px,3.6vw,42px); letter-spacing:-0.02em; margin-bottom:18px; max-width:700px; }
@@ -108,6 +108,11 @@
   .counter p{ margin:0; color:var(--ink-dim); font-size:14.5px; line-height:1.7; }
   .counter p b{ color:var(--ink); }
 
+  .citation{ margin-top:60px; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:30px 32px; }
+  .citation blockquote{ margin:0; }
+  .citation p{ margin:0; color:var(--ink); font-size:15px; line-height:1.8; }
+  .citation cite{ display:block; margin-top:14px; font-style:normal; font-size:12.5px; color:var(--ink-faint); }
+
   /* ---------------- footer ---------------- */
   footer{ margin-top:150px; background:var(--bg-alt); border-top:1px solid var(--line-soft); padding:80px 0 40px; }
   .footer-wordmark{ font-weight:800; font-size:clamp(48px,9vw,120px); letter-spacing:-0.03em; color:rgba(255,255,255,0.08); line-height:1; margin-bottom:50px; }
@@ -140,18 +145,20 @@
 <div class="wrap hero">
   <div class="kicker">DNV additional class notation · Pt.6 Ch.11</div>
   <h1 class="headline">Your ship generates data. <em>Prove it can be trusted.</em></h1>
-  <p class="sub">D-INF is DNV's notation for the pipe the data runs through — sensor to vessel server to shore — not the sensors themselves. Get it right, and every system downstream can finally rely on what the ship is telling it.</p>
   <div class="cta-row">
     <a class="btn-primary" href="#adopters">See who already has it</a>
     <a class="btn-ghost" href="#why">Why would anyone bother? ↓</a>
   </div>
 
-  <div class="stat-strip">
-    <div class="stat"><b>2021</b><span>Notation entered into force</span></div>
-    <div class="stat"><b>3</b><span>Qualifiers — Essential, Generic, Standardized</span></div>
-    <div class="stat"><b>3 yrs</b><span>Minimum history required onshore</span></div>
+  <div class="citation">
+    <blockquote>
+      <p>“With the D-INF approval DNV has verified that you can trust that the data gathered from the ship is the actual data, and that the data management process ensures 
+        that high data quality is maintained. This is vital for owners to build trust in value-chain stakeholders, from class and reporting authorities, through to insurance providers, financiers, cargo owners and charterers. 
+        In addition, as the risk of cyber-attacks continues to rise, in both frequency and sophistication, we applaud Kongsberg Digital’s decision to take the extra step for their customers and build in additional cyber security barriers to the system.” 
+      </p>
+      <cite>Jarle Coll Blomhoff, group leader cyber safety & security at DNV</cite>
+    </blockquote>
   </div>
-</div>
 
 <section id="what" class="wrap">
   <div class="eyebrow">The short version</div>
@@ -237,6 +244,7 @@
     <div class="mark2">i</div>
     <p><b>The honest counterpoint:</b> if your vessel only ever needs one bespoke integration for one use case, the Essential qualifier — or no notation at all — may genuinely be enough. D-INF earns its cost when data needs to outlive the system that first collected it.</p>
   </div>
+
 </section>
 
 <footer>
